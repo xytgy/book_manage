@@ -35,7 +35,7 @@ public class AuthService {
         }
 
         // 3. 比较密码
-        if (!user.getPassword().equals(request.getPassword())) {
+        if (!user.getPassword().equals(password)) {
             throw new ServiceException(401, "密码错误");
         }
 

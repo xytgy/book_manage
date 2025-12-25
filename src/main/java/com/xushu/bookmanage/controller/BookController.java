@@ -59,4 +59,13 @@ public class BookController {
         Book updatedBook = bookService.updateBook(id, book);
         return Result.success("更新成功", updatedBook);
     }
+
+    /**
+     * 查询单个图书
+     */
+    @GetMapping("/{id}")
+    public Result<Book> getBookById(@PathVariable Long id) {
+        Book book = bookService.selectById(id);
+        return Result.success("查询成功", book);
+    }
 }

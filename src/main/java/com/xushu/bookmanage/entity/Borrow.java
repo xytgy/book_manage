@@ -25,7 +25,7 @@ public class Borrow {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime returnDate;
 
-    private String status; // BORROWED, RETURNED
+    private Integer status; // 0: 借阅中, 1: 已归还, 2: 已逾期
 
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

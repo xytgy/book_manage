@@ -24,4 +24,58 @@
         where id = #{id}
     </update>
 
+    <resultMap id="BorrowRecordDtoMap" type="com.xushu.bookmanage.dto.BorrowRecordDto">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="bookId" column="book_id"/>
+        <result property="bookTitle" column="book_title"/>
+        <result property="borrowDate" column="borrow_date"/>
+        <result property="returnDate" column="return_date"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="selectBorrowList" resultMap="BorrowRecordDtoMap">
+        SELECT
+            b.id,
+            b.user_id,
+            u.username,
+            b.book_id,
+            bk.title AS book_title,
+            b.borrow_date,
+            b.return_date,
+            b.status
+        FROM
+            borrow b
+        LEFT JOIN
+            user u ON b.user_id = u.id
+        LEFT JOIN
+            book bk ON b.book_id = bk.id
+        <where>
+            <if test="username != null and username != ''">
+                AND u.username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="bookTitle != null and bookTitle != ''">
+                AND bk.title LIKE CONCAT('%', #{bookTitle}, '%')
+            </if>
+            <if test="status != null">
+                AND b.status = #{status}
+            </if>
+        </where>
+        ORDER BY b.borrow_date DESC
+    </select>
+
+    <select id="findUnreturnedBorrowByUserAndBook" resultType="com.xushu.bookmanage.entity.Borrow">
+        SELECT * FROM borrow
+        WHERE user_id = #{userId}
+          AND book_id = #{bookId}
+          AND status = 0
+    </select>
+
+    <select id="countUnreturnedBorrowsByBookId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM borrow
+        WHERE book_id = #{bookId}
+          AND status = 0
+    </select>
+
 </mapper>

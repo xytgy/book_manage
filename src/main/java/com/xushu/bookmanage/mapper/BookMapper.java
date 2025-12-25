@@ -1,7 +1,6 @@
 package com.xushu.bookmanage.mapper;
 
 import com.xushu.bookmanage.entity.Book;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,5 +30,9 @@ public interface BookMapper {
 
     int decreaseStock(@Param("bookId") Long bookId);
 
+    int increaseStock(@Param("bookId") Long bookId);
+
     int increaseBorrowedCount(@Param("bookId") Long bookId);
+
+    int decreaseBorrowedCount(@Param("bookId") Long bookId);
 }

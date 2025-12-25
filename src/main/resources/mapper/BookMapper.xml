@@ -107,4 +107,12 @@
         update book set borrowed_count = borrowed_count + 1 where id = #{bookId}
     </update>
 
+    <update id="increaseStock">
+        update book set stock = stock + 1 where id = #{bookId}
+    </update>
+
+    <update id="decreaseBorrowedCount">
+        update book set borrowed_count = borrowed_count - 1 where id = #{bookId} and borrowed_count > 0
+    </update>
+
 </mapper>

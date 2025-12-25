@@ -1,10 +1,9 @@
 package com.xushu.bookmanage.service.impl;
 
 import com.xushu.bookmanage.entity.Book;
-import com.xushu.bookmanage.entity.Category;
 import com.xushu.bookmanage.exception.ServiceException;
 import com.xushu.bookmanage.mapper.BookMapper;
-import com.xushu.bookmanage.mapper.CategoryMapper;
+import com.xushu.bookmanage.mapper.BorrowMapper;
 import com.xushu.bookmanage.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,8 @@ public class BookServiceImpl implements BookService {
     private BookMapper bookMapper;
 
     @Autowired
-    private CategoryMapper categoryMapper;
+    private BorrowMapper borrowMapper;
+
 
     @Override
     public Book addBook(Book book) {
@@ -62,6 +62,11 @@ public class BookServiceImpl implements BookService {
         if (book == null) {
             throw new ServiceException(404, "图书不存在");
         }
+
+        // 检查图书是否已被借阅且未归还
+        if (borrowMapper.countUnreturnedBorrowsByBookId(id) > 0) {
+            throw new ServiceException(400, "该图书已被借阅，无法删除");
+        }
         
         // 2. 执行删除
         bookMapper.deleteById(id);
@@ -88,5 +93,14 @@ public class BookServiceImpl implements BookService {
 
         // 4. 返回更新后的完整信息（包含分类名称）
         return bookMapper.selectById(id);
+    }
+
+    @Override
+    public Book selectById(Long id) {
+        Book book = bookMapper.selectById(id);
+        if (book == null) {
+            throw new ServiceException(404, "图书不存在");
+        }
+        return book;
     }
 }
