@@ -23,16 +23,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User addUser(User user) {
-        // 1. 检查用户名是否已存在
+
         User existingUser = baseMapper.getByUsername(user.getUsername());
         if (existingUser != null) {
             throw new ServiceException(400, "用户名已存在");
         }
         
-        // 2. 保存用户 (MyMetaObjectHandler 会自动填充 createTime)
+
         this.save(user);
         
-        // 3. 返回保存后的用户信息 (包含生成的 ID)
+
         return user;
     }
 

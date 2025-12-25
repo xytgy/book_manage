@@ -11,8 +11,85 @@
         select count(*) from book where isbn = #{isbn}
     </select>
 
-    <select id="selectById" resultType="com.xushu.bookmanage.entity.Book">
-        select * from book where id = #{id}
+    <resultMap id="BookResultMap" type="com.xushu.bookmanage.entity.Book">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="author" column="author"/>
+        <result property="isbn" column="isbn"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="publisher" column="publisher"/>
+        <result property="publishDate" column="publish_date"/>
+        <result property="price" column="price"/>
+        <result property="stock" column="stock"/>
+        <result property="description" column="description"/>
+        <result property="cover" column="cover"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="BookResultMap">
+        select b.*, c.name as category_name
+        from book b
+        left join category c on b.category_id = c.id
+        where b.id = #{id}
     </select>
+
+    <select id="selectBookList" resultMap="BookResultMap">
+        select b.*, c.name as category_name
+        from book b
+        left join category c on b.category_id = c.id
+        <where>
+            <if test="title != null and title != ''">
+                and b.title like concat('%', #{title}, '%')
+            </if>
+            <if test="author != null and author != ''">
+                and b.author like concat('%', #{author}, '%')
+            </if>
+            <if test="categoryId != null and categoryId != 0">
+                and b.category_id = #{categoryId}
+            </if>
+        </where>
+        order by b.create_time desc
+        limit #{offset}, #{pageSize}
+    </select>
+
+    <select id="countBookList" resultType="long">
+        select count(*)
+        from book b
+        <where>
+            <if test="title != null and title != ''">
+                and b.title like concat('%', #{title}, '%')
+            </if>
+            <if test="author != null and author != ''">
+                and b.author like concat('%', #{author}, '%')
+            </if>
+            <if test="categoryId != null and categoryId != 0">
+                and b.category_id = #{categoryId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteById">
+        delete from book where id = #{id}
+    </delete>
+
+    <update id="updateById">
+        update book
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="isbn != null">isbn = #{isbn},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="publisher != null">publisher = #{publisher},</if>
+            <if test="publishDate != null">publish_date = #{publishDate},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

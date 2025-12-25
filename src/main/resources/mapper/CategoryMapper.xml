@@ -6,4 +6,39 @@
         select * from category where id = #{id}
     </select>
 
+    <select id="selectList" resultType="com.xushu.bookmanage.entity.Category">
+        select c.*, (select count(*) from book b where b.category_id = c.id) as book_count
+        from category c
+        <where>
+            <if test="name != null and name != ''">
+                and c.name like concat('%', #{name}, '%')
+            </if>
+        </where>
+        order by c.id asc
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into category (name, code, description, create_time, update_time)
+        values (#{name}, #{code}, #{description}, now(), now())
+    </insert>
+
+    <update id="updateById">
+        update category
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="description != null">description = #{description},</if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from category where id = #{id}
+    </delete>
+
+    <select id="countBooksByCategoryId" resultType="int">
+        select count(*) from book where category_id = #{categoryId}
+    </select>
+
 </mapper>
