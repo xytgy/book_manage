@@ -37,14 +37,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Map<String, Object> findBookList(String title, String author, Integer categoryId, Integer pageNum, Integer pageSize) {
+    public Map<String, Object> findBookList(String title, String author, Integer categoryId, Integer pageNum, Integer pageSize, Integer minStock) {
         if (pageNum == null || pageNum < 1) pageNum = 1;
         if (pageSize == null || pageSize < 1) pageSize = 10;
         
         int offset = (pageNum - 1) * pageSize;
         
-        List<Book> list = bookMapper.selectBookList(title, author, categoryId, offset, pageSize);
-        long total = bookMapper.countBookList(title, author, categoryId);
+        List<Book> list = bookMapper.selectBookList(title, author, categoryId, offset, pageSize, minStock);
+        long total = bookMapper.countBookList(title, author, categoryId, minStock);
         
         Map<String, Object> result = new HashMap<>();
         result.put("list", list);

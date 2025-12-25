@@ -3,6 +3,7 @@ package com.xushu.bookmanage.controller;
 import com.xushu.bookmanage.common.Result;
 import com.xushu.bookmanage.entity.Book;
 import com.xushu.bookmanage.service.BookService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/books")
 @CrossOrigin
+@Slf4j
+
 public class BookController {
 
     @Autowired
@@ -24,8 +27,9 @@ public class BookController {
                                               @RequestParam(required = false) String author,
                                               @RequestParam(required = false) Integer categoryId,
                                               @RequestParam(defaultValue = "1") Integer pageNum,
-                                              @RequestParam(defaultValue = "10") Integer pageSize) {
-        Map<String, Object> data = bookService.findBookList(title, author, categoryId, pageNum, pageSize);
+                                              @RequestParam(defaultValue = "10") Integer pageSize,
+                                              @RequestParam(required = false) Integer minStock) {
+        Map<String, Object> data = bookService.findBookList(title, author, categoryId, pageNum, pageSize, minStock);
         return Result.success("获取成功", data);
     }
 

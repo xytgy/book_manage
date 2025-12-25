@@ -14,4 +14,4 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 server:
-  port: 8888 # 自定义端口
+  port: 8888

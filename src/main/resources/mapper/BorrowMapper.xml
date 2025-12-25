@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xushu.bookmanage.mapper.BorrowMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into borrow (user_id, book_id, borrow_date, status, create_time, update_time)
+        values (#{userId}, #{bookId}, #{borrowDate}, #{status}, now(), now())
+    </insert>
+
+    <select id="selectById" resultType="com.xushu.bookmanage.entity.Borrow">
+        select * from borrow where id = #{id}
+    </select>
+
+    <update id="updateById">
+        update borrow
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="bookId != null">book_id = #{bookId},</if>
+            <if test="borrowDate != null">borrow_date = #{borrowDate},</if>
+            <if test="returnDate != null">return_date = #{returnDate},</if>
+            <if test="status != null">status = #{status},</if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

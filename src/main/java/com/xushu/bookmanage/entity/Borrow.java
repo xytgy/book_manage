@@ -8,34 +8,24 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("book")
-public class Book {
+@TableName("borrow")
+public class Borrow {
     @TableId(type = IdType.AUTO)
     private Long id;
-    
-    private String title;
-    private String author;
-    private String isbn;
-    private Integer categoryId;
-    
-    @TableField(exist = false)
-    private String categoryName; // 数据库中不存在此字段，仅用于返回给前端
-    
-    private String publisher;
-    
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate publishDate;
-    
-    private BigDecimal price;
-    private Integer stock;
-    private Integer borrowedCount; // 已借阅数量
-    private String description;
-    private String cover;
+
+    private Long userId;
+    private Long bookId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime borrowDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime returnDate;
+
+    private String status; // BORROWED, RETURNED
 
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

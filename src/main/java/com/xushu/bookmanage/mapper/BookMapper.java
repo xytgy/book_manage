@@ -17,13 +17,19 @@ public interface BookMapper {
                              @Param("author") String author, 
                              @Param("categoryId") Integer categoryId, 
                              @Param("offset") Integer offset, 
-                             @Param("pageSize") Integer pageSize);
+                             @Param("pageSize") Integer pageSize,
+                             @Param("minStock") Integer minStock);
     
     long countBookList(@Param("title") String title, 
                       @Param("author") String author, 
-                      @Param("categoryId") Integer categoryId);
+                      @Param("categoryId") Integer categoryId,
+                      @Param("minStock") Integer minStock);
 
     int deleteById(@Param("id") Long id);
 
     int updateById(Book book);
+
+    int decreaseStock(@Param("bookId") Long bookId);
+
+    int increaseBorrowedCount(@Param("bookId") Long bookId);
 }
