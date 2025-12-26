@@ -12,6 +12,7 @@ public interface BorrowMapper {
     int insert(Borrow borrow);
     Borrow selectById(@Param("id") Long id);
     int updateById(Borrow borrow);
+    int deleteById(@Param("id") Long id);
 
     // 新增方法：查询借阅列表
     List<BorrowRecordDto> selectBorrowList(@Param("username") String username,

@@ -11,6 +11,10 @@
         select * from borrow where id = #{id}
     </select>
 
+    <delete id="deleteById">
+        delete from borrow where id = #{id}
+    </delete>
+
     <update id="updateById">
         update borrow
         <set>

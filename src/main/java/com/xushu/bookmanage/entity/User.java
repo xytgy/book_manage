@@ -20,6 +20,9 @@ public class User {
     private String nickname;
     private String role;
     private Integer status; // 1: 启用, 0: 禁用
+    private String phone;
+    private String email;
+    private String intro;
 
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

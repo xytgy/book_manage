@@ -59,4 +59,42 @@ public class AuthService {
                 .userInfo(userDTO)
                 .build();
     }
+
+    public User getUserInfo(Long userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new ServiceException(404, "用户不存在");
+        }
+        // 隐藏密码
+        user.setPassword(null);
+        return user;
+    }
+
+    public void updateProfile(Long userId, User profileData) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new ServiceException(404, "用户不存在");
+        }
+
+        user.setNickname(profileData.getNickname());
+        user.setPhone(profileData.getPhone());
+        user.setEmail(profileData.getEmail());
+        user.setIntro(profileData.getIntro());
+
+        userMapper.updateById(user);
+    }
+
+    public void resetPassword(Long userId, String oldPassword, String newPassword) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new ServiceException(404, "用户不存在");
+        }
+
+        if (!user.getPassword().equals(oldPassword)) {
+            throw new ServiceException(400, "旧密码错误");
+        }
+
+        user.setPassword(newPassword);
+        userMapper.updateById(user);
+    }
 }

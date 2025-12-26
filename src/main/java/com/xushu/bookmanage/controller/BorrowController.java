@@ -40,4 +40,10 @@ public class BorrowController {
         borrowService.returnBook(id);
         return Result.success("归还成功", null);
     }
+
+    @DeleteMapping("/{id}")
+    public Result<Void> deleteBorrow(@PathVariable Long id) {
+        borrowService.deleteBorrow(id);
+        return Result.success("删除成功", null);
+    }
 }

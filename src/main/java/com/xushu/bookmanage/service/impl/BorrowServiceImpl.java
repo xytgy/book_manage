@@ -99,4 +99,22 @@ public class BorrowServiceImpl implements BorrowService {
         bookMapper.increaseStock(borrow.getBookId());
         bookMapper.decreaseBorrowedCount(borrow.getBookId());
     }
+
+    @Override
+    @Transactional
+    public void deleteBorrow(Long id) {
+        Borrow borrow = borrowMapper.selectById(id);
+        if (borrow == null) {
+            throw new ServiceException(404, "借阅记录不存在");
+        }
+        
+        // 如果是借阅中或已逾期状态，删除前应该先处理库存
+        // 这里采用允许删除，但如果是未归还状态（借阅中或已逾期），需要归还库存
+        if (borrow.getStatus() == 0 || borrow.getStatus() == 2) {
+            bookMapper.increaseStock(borrow.getBookId());
+            bookMapper.decreaseBorrowedCount(borrow.getBookId());
+        }
+        
+        borrowMapper.deleteById(id);
+    }
 }

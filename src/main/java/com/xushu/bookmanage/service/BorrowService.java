@@ -12,4 +12,6 @@ public interface BorrowService {
     List<BorrowRecordDto> getBorrowList(String username, String bookTitle, Integer status);
 
     void returnBook(Long borrowId);
+
+    void deleteBorrow(Long id);
 }
